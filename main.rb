@@ -7,7 +7,7 @@ require_relative 'player'
 Window.bgcolor = [255, 128, 255, 255]
 ground_img = Image.new(640, 80, [255, 116, 80, 48])
 ground_img.box_fill(0, 0, 640, 10, [255, 0, 128, 0])
-font = Font.new(32) # 追加
+font = Font.new(32)
 
 apples = []
 apple_n = 5
@@ -26,7 +26,7 @@ player = Player.new()
 Window.loop do
   Window.draw(0, 400, ground_img)
 
-  if player.active # 追加
+  if player.active
     Sprite.update(apples)
     Sprite.update(bombs)
     player.update
@@ -37,16 +37,35 @@ Window.loop do
       apples << Apple.new()
     end
 
-    Sprite.check(bombs, player) # 追加
-    Sprite.clean(bombs) # 追加
+    Sprite.check(bombs, player)
+    Sprite.clean(bombs)
     (bomb_n - bombs.size).times do
       bombs << Bomb.new()
     end
   end
 
   Sprite.draw(apples)
-  Sprite.draw(bombs) # 追加
+  Sprite.draw(bombs)
   player.draw
 
-  Window.draw_font(10, 10, "Ayimen：#{player.score}", font)
+  Window.draw_font(10, 10, "Score：#{player.score}", font, {color: C_BLUE})
+
+  if !player.active 
+    if player.game_end
+      Window.draw_font(210, 190, "Game over", font, {color: C_BLUE})
+    end
+    Window.draw_font(120, 282, "Spacebar: Start game", font, {color: C_BLUE})
+    Window.draw_font(181, 314, "ESC key: end game", font, {color: C_BLUE})
+    if Input.key_push?(K_SPACE)
+      if player.game_end
+        apples.map {|apple| apple.vanish}
+        Sprite.clean(apples)
+        bombs.map {|bomb| bomb.vanish}
+        Sprite.clean(bombs)
+      end
+      player.restart
+    elsif Input.key_push?(K_ESCAPE)
+      break
+    end
+  end
 end
