@@ -1,5 +1,5 @@
 class Player < Sprite
-    attr_accessor :score, :active
+    attr_accessor :score, :active, :game_end
   
     def initialize()
       image = Image.load("images/noschar1.png")
@@ -7,7 +7,8 @@ class Player < Sprite
       y = 400 - image.height
       @sound = Sound.new("sounds/get.wav")
       @score = 0
-      @active = true
+      @active = false
+      @game_end = false
       super(x, y, image)
     end
   
@@ -25,5 +26,14 @@ class Player < Sprite
   
     def hit
       @active = false
+      @game_end = true
+    end
+  
+    def restart
+      self.x = (640 - image.width) / 2
+      self.y = 400 - image.height
+      @score = 0
+      @active = true
+      @game_end = false
     end
 end
