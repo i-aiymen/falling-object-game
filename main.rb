@@ -7,14 +7,23 @@ ground_img = Image.new(640, 80, [255, 116, 80, 48])
 ground_img.box_fill(0, 0, 640, 10, [255, 0, 128, 0])
 
 player = Player.new()
-apple = Apple.new()
+apples = []
+apple_n = 5
+apple_n.times do
+  apples << Apple.new()
+end
 
 Window.loop do
     Window.draw(0, 400, ground_img)
 
-    apple.update
+    Sprite.update(apples)
     player.update
 
-    apple.draw
+    Sprite.clean(apples) # 追加
+    (apple_n - apples.size).times do # 追加
+        apples << Apple.new()
+    end
+
+    Sprite.draw(apples)
     player.draw
 end
