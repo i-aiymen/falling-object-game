@@ -1,12 +1,13 @@
 class Player < Sprite
-    attr_accessor :score
+    attr_accessor :score, :active
   
     def initialize()
       image = Image.load("images/noschar1.png")
       x = (640 - image.width) / 2
       y = 400 - image.height
-      @sound = Sound.new("sounds/get.wav") # 追加
-      @score = 0 # 追加
+      @sound = Sound.new("sounds/get.wav")
+      @score = 0
+      @active = true
       super(x, y, image)
     end
   
@@ -17,8 +18,12 @@ class Player < Sprite
       end
     end
   
-    def shot # 追加
+    def shot
       @sound.play
       @score += 1
+    end
+  
+    def hit
+      @active = false
     end
 end
