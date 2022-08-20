@@ -7,6 +7,9 @@ class Player < Sprite
     end
   
     def update
-      self.x += Input.x
+      dx = Input.x
+        if (dx == -1 && self.x > 0) || (dx == 1 && self.x < (640 - image.width)) 
+          self.x += dx
+        end
     end
   end
